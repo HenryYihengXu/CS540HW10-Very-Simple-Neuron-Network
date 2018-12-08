@@ -4,6 +4,7 @@ import static java.lang.Math.max;
 public class Neural {
 
     double w1, w2, w3, w4, w5, w6, w7, w8, w9;
+    double uA, uB, uC, vA, vB, vC;
 
     public Neural() {
     }
@@ -21,6 +22,15 @@ public class Neural {
         this.w9 = w9;
     }
 
+    public void compute(double x1, double x2) {
+        uA = w1 + x1 * w2 + x2 * w3;
+        vA = max(uA, 0);
+        uB = w4 + x1 * w5 + x2 * w6;
+        vB = max(uB, 0);
+        uC = w7 + vA * w8 + vB * w9;
+        vC = 1 / (1 + exp(-uC));
+    }
+
     public static void main(String[] args) {
 
         int flag = Integer.valueOf(args[0]);
@@ -32,7 +42,8 @@ public class Neural {
         if (flag == 100) {
             double x1 = Double.parseDouble(args[10]);
             double x2 = Double.parseDouble(args[11]);
-            double uA, vA, uB, vB, uC, vC;
+            neural.compute(x1, x2);
+            /*double uA, vA, uB, vB, uC, vC;
             uA = neural.w1 + x1 * neural.w2 + x2 * neural.w3;
             vA = max(uA, 0);
             uB = neural.w4 + x1 * neural.w5 + x2 * neural.w6;
@@ -41,8 +52,11 @@ public class Neural {
             vC = 1 / (1 + exp(-uC));
             System.out.println(String.format("%.5f", uA) + " " + String.format("%.5f", vA) + " "
                     + String.format("%.5f", uB) + " " + String.format("%.5f", vB) + " "
-                    + String.format("%.5f", uC) + " " + String.format("%.5f", vC));
-            
+                    + String.format("%.5f", uC) + " " + String.format("%.5f", vC));*/
+            System.out.println(String.format("%.5f", neural.uA) + " " + String.format("%.5f", neural.vA) + " "
+                    + String.format("%.5f", neural.uB) + " " + String.format("%.5f", neural.vB) + " "
+                    + String.format("%.5f", neural.uC) + " " + String.format("%.5f", neural.vC));
+
         } else if (flag == 200) {
 
         } else if (flag == 300) {
