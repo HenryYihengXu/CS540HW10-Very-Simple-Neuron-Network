@@ -28,7 +28,11 @@ public class Neural {
         uB = w4 + x1 * w5 + x2 * w6;
         vB = max(uB, 0);
         uC = w7 + vA * w8 + vB * w9;
-        vC = 1 / (1 + exp(-uC));
+        vC = sigmoid(uC);
+    }
+
+    public double sigmoid(double z) {
+        return  1 / (1 + exp(-z));
     }
 
     public static void main(String[] args) {
@@ -58,7 +62,16 @@ public class Neural {
                     + String.format("%.5f", neural.uC) + " " + String.format("%.5f", neural.vC));
 
         } else if (flag == 200) {
-
+            double x1 = Double.parseDouble(args[10]);
+            double x2 = Double.parseDouble(args[11]);
+            double y = Double.parseDouble(args[12]);
+            neural.compute(x1, x2);
+            double E = (neural.vC - y) * (neural.vC - y) / (double)2;
+            double partialDeriveVC = neural.vC - y;
+            double fDeriveUC = neural.vC * (1 - neural.vC);
+            double partialDeriveUC = partialDeriveVC * fDeriveUC;
+            System.out.println(String.format("%.5f", E) + " " + String.format("%.5f", partialDeriveVC) + " "
+                    + String.format("%.5f", partialDeriveUC));
         } else if (flag == 300) {
 
         } else if (flag == 400) {
