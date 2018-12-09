@@ -93,6 +93,18 @@ public class Neural {
         }
     }
 
+    public void printW() {
+        System.out.println(String.format("%.5f", w1) + " "
+                + String.format("%.5f", w2) + " "
+                + String.format("%.5f", w3) + " "
+                + String.format("%.5f", w4) + " "
+                + String.format("%.5f", w5) + " "
+                + String.format("%.5f", w6) + " "
+                + String.format("%.5f", w7) + " "
+                + String.format("%.5f", w8) + " "
+                + String.format("%.5f", w9));
+    }
+
     public static void main(String[] args) {
 
         int flag = Integer.valueOf(args[0]);
@@ -152,34 +164,23 @@ public class Neural {
             double x2 = Double.parseDouble(args[11]);
             double y = Double.parseDouble(args[12]);
             double eta = Double.parseDouble(args[13]);
-            System.out.println(String.format("%.5f", neural.w1) + " "
-                    + String.format("%.5f", neural.w2) + " "
-                    + String.format("%.5f", neural.w3) + " "
-                    + String.format("%.5f", neural.w4) + " "
-                    + String.format("%.5f", neural.w5) + " "
-                    + String.format("%.5f", neural.w6) + " "
-                    + String.format("%.5f", neural.w7) + " "
-                    + String.format("%.5f", neural.w8) + " "
-                    + String.format("%.5f", neural.w9));
+
+            neural.printW();
+
             neural.computeUV(x1, x2);
             neural.computeE(y);
             System.out.println(String.format("%.5f", neural.E));
+
             neural.computePartialDeriveUCVC(x1, x2, y);
             neural.computePartialDeriveUABVAB(x1, x2, y);
             neural.computePartialDeriveW(x1, x2, y);
             neural.updateW(eta);
-            System.out.println(String.format("%.5f", neural.w1) + " "
-                    + String.format("%.5f", neural.w2) + " "
-                    + String.format("%.5f", neural.w3) + " "
-                    + String.format("%.5f", neural.w4) + " "
-                    + String.format("%.5f", neural.w5) + " "
-                    + String.format("%.5f", neural.w6) + " "
-                    + String.format("%.5f", neural.w7) + " "
-                    + String.format("%.5f", neural.w8) + " "
-                    + String.format("%.5f", neural.w9));
+            neural.printW();
+
             neural.computeUV(x1, x2);
             neural.computeE(y);
             System.out.println(String.format("%.5f", neural.E));
+
         } else if (flag == 600) {
 
         } else if (flag == 700) {
