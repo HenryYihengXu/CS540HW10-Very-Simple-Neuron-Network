@@ -35,6 +35,14 @@ public class Neural {
         return  1 / (1 + exp(-z));
     }
 
+    public double deriveReLU(double uj) {
+        if (uj >= 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     public static void main(String[] args) {
 
         int flag = Integer.valueOf(args[0]);
@@ -73,7 +81,25 @@ public class Neural {
             System.out.println(String.format("%.5f", E) + " " + String.format("%.5f", partialDeriveVC) + " "
                     + String.format("%.5f", partialDeriveUC));
         } else if (flag == 300) {
+            double x1 = Double.parseDouble(args[10]);
+            double x2 = Double.parseDouble(args[11]);
+            double y = Double.parseDouble(args[12]);
+            neural.compute(x1, x2);
+            double E = (neural.vC - y) * (neural.vC - y) / (double)2;
+            double partialDeriveVC = neural.vC - y;
+            double fDeriveUC = neural.vC * (1 - neural.vC);
+            double partialDeriveUC = partialDeriveVC * fDeriveUC;
 
+            double partialDeriveVA = neural.w8 * partialDeriveUC;
+            double partialDeriveUA = partialDeriveVA * neural.deriveReLU(neural.uA);
+
+            double partialDeriveVB = neural.w9 * partialDeriveUC;
+            double partialDeriveUB = partialDeriveVB * neural.deriveReLU(neural.uB);
+
+            System.out.println(String.format("%.5f", partialDeriveVA) + " "
+                    + String.format("%.5f", partialDeriveUA) + " "
+                    + String.format("%.5f", partialDeriveVB) + " "
+                    + String.format("%.5f", partialDeriveUB));
         } else if (flag == 400) {
 
         } else if (flag == 500) {
