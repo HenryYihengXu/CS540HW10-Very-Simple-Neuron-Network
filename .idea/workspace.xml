@@ -18,14 +18,14 @@
       <file leaf-file-name="Neural.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Neural.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
-              <caret line="73" column="5" lean-forward="false" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
+            <state relative-caret-position="459">
+              <caret line="185" column="0" lean-forward="true" selection-start-line="185" selection-start-column="0" selection-end-line="185" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1181#1182#0" expanded="true" />
                 <element signature="e#1232#1233#0" expanded="true" />
-                <element signature="e#2426#2427#0" expanded="true" />
-                <element signature="e#2467#2468#0" expanded="true" />
+                <element signature="e#2664#2665#0" expanded="true" />
+                <element signature="e#2705#2706#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -83,6 +83,11 @@
             <path>
               <item name="CSHW10-Very-Simple-Neuron-Network" type="b2602c69:ProjectViewProjectNode" />
               <item name="CS540HW10-Very-Simple-Neuron-Network" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CSHW10-Very-Simple-Neuron-Network" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CS540HW10-Very-Simple-Neuron-Network" type="462c0819:PsiDirectoryNode" />
+              <item name=".idea" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="CSHW10-Very-Simple-Neuron-Network" type="b2602c69:ProjectViewProjectNode" />
@@ -311,14 +316,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Neural.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="73" column="5" lean-forward="false" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
+        <state relative-caret-position="459">
+          <caret line="185" column="0" lean-forward="true" selection-start-line="185" selection-start-column="0" selection-end-line="185" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1181#1182#0" expanded="true" />
             <element signature="e#1232#1233#0" expanded="true" />
-            <element signature="e#2426#2427#0" expanded="true" />
-            <element signature="e#2467#2468#0" expanded="true" />
+            <element signature="e#2664#2665#0" expanded="true" />
+            <element signature="e#2705#2706#0" expanded="true" />
           </folding>
         </state>
       </provider>
