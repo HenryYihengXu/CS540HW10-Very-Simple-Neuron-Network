@@ -1,3 +1,10 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import static java.lang.Math.exp;
 import static java.lang.Math.max;
 
@@ -39,17 +46,17 @@ public class Neural {
         vC = sigmoid(uC);
     }
 
-    public void computeE(double y){
+    public void computeE(int y){
         E = (vC - y) * (vC - y) / (double)2;
     }
 
-    public void computePartialDeriveUCVC(double x1, double x2, double y) {
+    public void computePartialDeriveUCVC(double x1, double x2, int y) {
         partialDeriveVC = vC - y;
         fDeriveUC = vC * (1 - vC);
         partialDeriveUC = partialDeriveVC * fDeriveUC;
     }
 
-    public void computePartialDeriveUABVAB(double x1, double x2, double y) {
+    public void computePartialDeriveUABVAB(double x1, double x2, int y) {
         partialDeriveVA = w8 * partialDeriveUC;
         partialDeriveUA = partialDeriveVA * deriveReLU(uA);
 
@@ -57,7 +64,7 @@ public class Neural {
         partialDeriveUB = partialDeriveVB * deriveReLU(uB);
     }
 
-    public void computePartialDeriveW(double x1, double x2, double y) {
+    public void computePartialDeriveW(double x1, double x2, int y) {
         partialDeriveW1 = 1 * partialDeriveUA;
         partialDeriveW2 = x1 * partialDeriveUA;
         partialDeriveW3 = x2 * partialDeriveUA;
@@ -105,7 +112,7 @@ public class Neural {
                 + String.format("%.5f", w9));
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException{
 
         int flag = Integer.valueOf(args[0]);
 
@@ -124,7 +131,7 @@ public class Neural {
         } else if (flag == 200) {
             double x1 = Double.parseDouble(args[10]);
             double x2 = Double.parseDouble(args[11]);
-            double y = Double.parseDouble(args[12]);
+            int y = Integer.valueOf(args[12]);
             neural.computeUV(x1, x2);
             neural.computePartialDeriveUCVC(x1, x2, y);
             neural.computeE(y);
@@ -134,7 +141,7 @@ public class Neural {
         } else if (flag == 300) {
             double x1 = Double.parseDouble(args[10]);
             double x2 = Double.parseDouble(args[11]);
-            double y = Double.parseDouble(args[12]);
+            int y = Integer.valueOf(args[12]);
             neural.computeUV(x1, x2);
             neural.computePartialDeriveUCVC(x1, x2, y);
             neural.computePartialDeriveUABVAB(x1, x2, y);
@@ -145,7 +152,7 @@ public class Neural {
         } else if (flag == 400) {
             double x1 = Double.parseDouble(args[10]);
             double x2 = Double.parseDouble(args[11]);
-            double y = Double.parseDouble(args[12]);
+            int y = Integer.valueOf(args[12]);
             neural.computeUV(x1, x2);
             neural.computePartialDeriveUCVC(x1, x2, y);
             neural.computePartialDeriveUABVAB(x1, x2, y);
@@ -162,7 +169,7 @@ public class Neural {
         } else if (flag == 500) {
             double x1 = Double.parseDouble(args[10]);
             double x2 = Double.parseDouble(args[11]);
-            double y = Double.parseDouble(args[12]);
+            int y = Integer.valueOf(args[12]);
             double eta = Double.parseDouble(args[13]);
 
             neural.printW();
@@ -182,11 +189,42 @@ public class Neural {
             System.out.println(String.format("%.5f", neural.E));
 
         } else if (flag == 600) {
-
+            neural.readTraining();
+            for (Item i : neural.trainingSet) {
+                System.out.println(i.x1 + " " + i.x2 + " " + i.y);
+            }
         } else if (flag == 700) {
 
         } else if (flag == 800) {
 
         }
+    }
+
+    Item[] trainingSet = null;
+
+    public void readTraining() throws IOException{
+        String pathname = "hw2_midterm_A_train.txt";
+        FileReader reader = new FileReader(pathname);
+        BufferedReader br = new BufferedReader(reader);
+        List<String[]> data = new ArrayList<String[]>();
+        String line = br.readLine();
+        while (line != null) {
+            String[] fields = line.split(" ");
+            data.add(fields);
+            line = br.readLine();
+        }
+        trainingSet = new Item[data.size()];
+        br.close();
+        for (int i = 0; i < data.size(); i++) {
+            trainingSet[i] = new Item();
+            trainingSet[i].x1 = Double.parseDouble(data.get(i)[0]);
+            trainingSet[i].x2 = Double.parseDouble(data.get(i)[1]);
+            trainingSet[i].y = Integer.valueOf(data.get(i)[2]);
+        }
+    }
+
+    class Item {
+        double x1, x2;
+        int y;
     }
 }
