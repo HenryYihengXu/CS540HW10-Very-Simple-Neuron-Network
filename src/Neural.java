@@ -243,12 +243,63 @@ public class Neural {
             }
 
         } else if (flag == 800) {
-
+            neural.readTraining();
+            neural.readEvaluation();
+            double eta = Double.parseDouble(args[10]);
+            int T = Integer.valueOf(args[11]);
+            double preE = Double.MAX_VALUE;
+            for (int i = 0; i < T; i++) {
+                for (int j = 0; j < neural.trainingSet.length; j++) {
+                    double x1 = neural.trainingSet[j].x1;
+                    double x2 = neural.trainingSet[j].x2;
+                    double y = neural.trainingSet[j].y;
+                    neural.computeUV(x1, x2);
+                    neural.computePartialDeriveUCVC(x1, x2, y);
+                    neural.computePartialDeriveUABVAB(x1, x2, y);
+                    neural.computePartialDeriveW(x1, x2, y);
+                    neural.updateW(eta);
+                }
+                double E = 0;
+                for (Item item : neural.evaluationSet) {
+                    neural.computeUV(item.x1, item.x2);
+                    neural.computeE(item.y);
+                    E += neural.E;
+                }
+                if (E > preE) {
+                    T = i;
+                    preE = E;
+                    break;
+                } else {
+                    preE = E;
+                }
+            }
+            System.out.println(T + 1);
+            neural.printW();
+            System.out.println(String.format("%.5f", preE));
+            System.out.println(String.format("%.5f", neural.getClassificationAccuracy()));
         }
+    }
+
+    public double getClassificationAccuracy() throws IOException {
+        readTest();
+        int count = 0;
+        for (Item item : testSet) {
+            computeUV(item.x1, item.x2);
+            if (uC >= 1/2) {
+                uC = 1;
+            } else {
+                uC = 0;
+            }
+            if (uC == item.y) {
+                count++;
+            }
+        }
+        return count / (double)testSet.length;
     }
 
     Item[] trainingSet = null;
     Item[] evaluationSet = null;
+    Item[] testSet = null;
 
     public void readTraining() throws IOException {
         String pathname = "hw2_midterm_A_train.txt";
@@ -289,6 +340,27 @@ public class Neural {
             evaluationSet[i].x1 = Double.parseDouble(data.get(i)[0]);
             evaluationSet[i].x2 = Double.parseDouble(data.get(i)[1]);
             evaluationSet[i].y = Integer.valueOf(data.get(i)[2]);
+        }
+    }
+
+    public void readTest() throws IOException {
+        String pathname = "hw2_midterm_A_test.txt";
+        FileReader reader = new FileReader(pathname);
+        BufferedReader br = new BufferedReader(reader);
+        ArrayList<String[]> data = new ArrayList<String[]>();
+        String line = br.readLine();
+        while (line != null) {
+            String[] fields = line.split(" ");
+            data.add(fields);
+            line = br.readLine();
+        }
+        testSet = new Item[data.size()];
+        br.close();
+        for (int i = 0; i < data.size(); i++) {
+            testSet[i] = new Item();
+            testSet[i].x1 = Double.parseDouble(data.get(i)[0]);
+            testSet[i].x2 = Double.parseDouble(data.get(i)[1]);
+            testSet[i].y = Integer.valueOf(data.get(i)[2]);
         }
     }
 
