@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import static java.lang.Math.exp;
 import static java.lang.Math.max;
+import static java.lang.Math.nextUp;
 
 public class Neural {
 
@@ -216,6 +217,30 @@ public class Neural {
                 System.out.println(String.format("%.5f", E));
             }
         } else if (flag == 700) {
+            neural.readTraining();
+            neural.readEvaluation();
+            double eta = Double.parseDouble(args[10]);
+            int T = Integer.valueOf(args[11]);
+            for (int i = 0; i < T; i++) {
+                for (int j = 0; j < neural.trainingSet.length; j++) {
+                    double x1 = neural.trainingSet[j].x1;
+                    double x2 = neural.trainingSet[j].x2;
+                    double y = neural.trainingSet[j].y;
+                    neural.computeUV(x1, x2);
+                    neural.computePartialDeriveUCVC(x1, x2, y);
+                    neural.computePartialDeriveUABVAB(x1, x2, y);
+                    neural.computePartialDeriveW(x1, x2, y);
+                    neural.updateW(eta);
+                }
+                neural.printW();
+                double E = 0;
+                for (Item item : neural.evaluationSet) {
+                    neural.computeUV(item.x1, item.x2);
+                    neural.computeE(item.y);
+                    E += neural.E;
+                }
+                System.out.println(String.format("%.5f", E));
+            }
 
         } else if (flag == 800) {
 
