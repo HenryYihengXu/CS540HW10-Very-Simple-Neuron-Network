@@ -188,6 +188,8 @@ public class Neural {
 
         } else if (flag == 600) {
             neural.readTraining();
+            neural.readEvaluation();
+            double eta = Double.parseDouble(args[10]);
             /*for (Item i : neural.trainingSet) {
                 System.out.println(i.x1 + " " + i.x2 + " " + i.y);
             }*/
@@ -199,6 +201,19 @@ public class Neural {
                 System.out.println(String.format("%.5f", x1) + " "
                         + String.format("%.5f", x2) + " "
                         + String.format("%.5f", y));
+                neural.computeUV(x1, x2);
+                neural.computePartialDeriveUCVC(x1, x2, y);
+                neural.computePartialDeriveUABVAB(x1, x2, y);
+                neural.computePartialDeriveW(x1, x2, y);
+                neural.updateW(eta);
+                neural.printW();
+                double E = 0;
+                for (Item item : neural.evaluationSet) {
+                    neural.computeUV(item.x1, item.x2);
+                    neural.computeE(item.y);
+                    E += neural.E;
+                }
+                System.out.println(String.format("%.5f", E));
             }
         } else if (flag == 700) {
 
@@ -208,6 +223,7 @@ public class Neural {
     }
 
     Item[] trainingSet = null;
+    Item[] evaluationSet = null;
 
     public void readTraining() throws IOException {
         String pathname = "hw2_midterm_A_train.txt";
@@ -227,6 +243,27 @@ public class Neural {
             trainingSet[i].x1 = Double.parseDouble(data.get(i)[0]);
             trainingSet[i].x2 = Double.parseDouble(data.get(i)[1]);
             trainingSet[i].y = Integer.valueOf(data.get(i)[2]);
+        }
+    }
+
+    public void readEvaluation() throws IOException {
+        String pathname = "hw2_midterm_A_eval.txt";
+        FileReader reader = new FileReader(pathname);
+        BufferedReader br = new BufferedReader(reader);
+        ArrayList<String[]> data = new ArrayList<String[]>();
+        String line = br.readLine();
+        while (line != null) {
+            String[] fields = line.split(" ");
+            data.add(fields);
+            line = br.readLine();
+        }
+        evaluationSet = new Item[data.size()];
+        br.close();
+        for (int i = 0; i < data.size(); i++) {
+            evaluationSet[i] = new Item();
+            evaluationSet[i].x1 = Double.parseDouble(data.get(i)[0]);
+            evaluationSet[i].x2 = Double.parseDouble(data.get(i)[1]);
+            evaluationSet[i].y = Integer.valueOf(data.get(i)[2]);
         }
     }
 
